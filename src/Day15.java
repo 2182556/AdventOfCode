@@ -1,65 +1,28 @@
-import java.io.*;
-import java.nio.file.*;
+import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Day15 {
 
-    public static int findMinVertex(int[] distance, boolean[] visited){
-        int minVertex=-1;
-        for (int i=0; i<distance.length; i++){
-            if (!visited[i] && (minVertex==-1 || distance[i]<distance[minVertex])){
-                minVertex=i;
-            }
-        }
-        return minVertex;
-    }
-
-    public static void dijkstra(int[][] field){
-        int v = field.length*field[0].length;
-        boolean[] visited = new boolean[v];
-        int[] distance = new int[v];
-        distance[0] = 0;
-        for (int i=1; i<v; i++){
-            distance[i]=Integer.MAX_VALUE;
-        }
-        for (int i=0; i<v-1; i++){
-            int minVertex = findMinVertex(distance,visited);
-            visited[minVertex] = true;
-            for (int j=0; j<v; j++){
-                if (field[minVertex][j]!=0 && !visited[j] && distance[minVertex]!=Integer.MAX_VALUE){
-                    int newDist = distance[minVertex]+field[minVertex][j];
-                    if (newDist < distance[j]){
-                        distance[j] = newDist;
-                    }
-                }
-            }
-        }
-        for (int i=0; i<v; i++){
-            System.out.println(distance[i]);
-        }
-        
-    }
-
-    public static int[][] smallestSumArray(int[][] field){
+    public static int shortestPath(int[][] field){
         int[][] riskLevel = new int[field.length][field[0].length];
-        riskLevel[0][0] = 0;
-        for (int i=0; i<field.length; i++){
-            for(int j=0; j<field[0].length; j++){
-                if (i>0 && j>0){
-                    if (riskLevel[i-1][j]>riskLevel[i][j-1]){
-                        riskLevel[i][j]=riskLevel[i][j-1]+field[i][j];
-                    } else {
-                        riskLevel[i][j]=riskLevel[i-1][j]+field[i][j];
+        int[][] neighbours = new int[][]{{1,0}, {0,1}, {-1,0}, {0,-1}};
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[] {0,0});
+        while (queue.size() > 0) {
+            int[] current = queue.poll();
+            for (int[] neighbour : neighbours) {
+                int[] next = new int[]{current[0] + neighbour[0], current[1] + neighbour[1]};
+                if (next[0] >= 0 && next[0] < field.length && next[1] >= 0 && next[1] < field[0].length) {
+                    int risk = riskLevel[current[0]][current[1]] + field[next[0]][next[1]];
+                    if (risk < riskLevel[next[0]][next[1]] || riskLevel[next[0]][next[1]] == 0) {
+                        riskLevel[next[0]][next[1]] = risk;
+                        queue.remove(next);
+                        queue.add(next);
                     }
-                } else if (j>0) {
-                    riskLevel[i][j]=riskLevel[i][j-1]+field[i][j];
-                } else if (i>0) {
-                    riskLevel[i][j]=riskLevel[i-1][j]+field[i][j];
                 }
             }
         }
-        return riskLevel;
+        return riskLevel[field.length-1][field[0].length-1];
     }
 
     public static void solution(ArrayList<String[]> arrayField, boolean partOne){
@@ -80,48 +43,37 @@ public class Day15 {
                     if (newField[i][j]>9) {
                         newField[i][j]-=9;
                     }
-                    // System.out.print(" "+ newField[i][j]);
                     b++;
                     if (b==field[0].length){
                         b=0;
                         extray++;
                     }
                 }
-                // System.out.println("");
                 a++;
                 if (a==field.length) {
                     a=0;
                     extrax++;
                 }
             }
-            ShortestPath t = new ShortestPath();
-		    // t.dijkstra(newField, 0);
-            int[][] riskLevel = smallestSumArray(newField);
-            // System.out.println(riskLevel[newField.length-1][newField[0].length-1]);
+            System.out.println("Part two: " + shortestPath(newField));
         } else {
-            int [][] riskLevel = smallestSumArray(field);
-            // System.out.println(riskLevel[field.length-1][field[0].length-1]);
-            dijkstra(field);
+            System.out.println("Part one: " + shortestPath(field));
         }
-
-
         
 
     }
 
     public static void main(String[] args){
-        String filename="day15test.txt";
+        String filename="day15.txt";
         try (Scanner fileReader = new Scanner(Paths.get(filename))) {
             ArrayList<String[]> field = new ArrayList<>();
             while (fileReader.hasNextLine()) {
                 String line = fileReader.nextLine().trim();
                 if (!line.isEmpty()) field.add(line.split(""));
             }
-            // System.out.print("Part one: ");
+            solution(field,true);
             solution(field,false);
             System.out.println("");
-            // System.out.print("Part two: ");
-            // solution(field,false);
         } catch (Exception e){
             System.out.println(e.getMessage());
         }

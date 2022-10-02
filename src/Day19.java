@@ -21,7 +21,7 @@ public class Day19 {
         }
     }
 
-    public static void solution(ArrayList<ArrayList<int[]>> input, boolean partOne) {
+    public static void solution(ArrayList<ArrayList<int[]>> input) {
         int x = 1, y = 2, z = 3;
         int[][] beaconVariations = new int[][]{
                 {x, y, z}, {x, z, -y}, {x, -y, -z}, {x, -z, y},
@@ -206,7 +206,7 @@ public class Day19 {
                     input.get(input.size()-1).add(new int[]{Integer.parseInt(line[0]),Integer.parseInt(line[1]),Integer.parseInt(line[2])});
                 }
             }
-            solution(input,true);
+            solution(input);
 //            solution(input,false);
         } catch (Exception e){
             System.out.println(e.getMessage());
