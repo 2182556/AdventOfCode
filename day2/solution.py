@@ -1,4 +1,4 @@
-scorePartOne, scorePartTwo = 0;
+scorePartOne, scorePartTwo = 0, 0;
 # Rock, paper, scissors
 # Part 2: lose, draw, win
 points = [3, 0, 6];
