@@ -12,13 +12,12 @@ with open('input.txt') as f:
     commands = [re.split('move | from | to |\n', s)[1:4] for s in lines[10:]];
     crates2 = copy.deepcopy(crates);
     for c in commands:
-        for i in range(0, int(c[0]), 1):
-            crate = crates[int(c[1])-1];
-            crates[int(c[2])-1].append(crate.pop());
+        for i in range(0, int(c[0])):
+            crates[int(c[2])-1].append(crates[int(c[1])-1].pop());
             
         crates2[int(c[2])-1].extend(crates2[int(c[1])-1][-int(c[0]):]);
-        crates2[int(c[1])-1] = crates2[int(c[1])-1][:-int(c[0])];
+        del crates2[int(c[1])-1][-int(c[0]):];
         
-    print('Solution part one: ', ''.join([crate.pop() for crate in crates]));
-    print('Solution part two: ', ''.join([crate.pop() for crate in crates2]));
+    print('Solution part one: ', ''.join([crate[-1] for crate in crates]));
+    print('Solution part two: ', ''.join([crate[-1] for crate in crates2]));
     
