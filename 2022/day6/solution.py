@@ -1,9 +1,8 @@
-def isMarker(linePart):
-    return len(set(linePart))==len(linePart);
+def firstMarker(l, markerLength):
+    return next(i for i in range(markerLength, len(l)) if len(set(l[i-markerLength:i])) == markerLength);
 
 with open('input.txt') as f:
-    for l in f:
-        for i in range(3, len(l)): 
-            if isMarker(l[i-3:i+1]): print('Solution part one: ', i+1); break;     
-        for i in range(13, len(l)):
-            if isMarker(l[i-13:i+1]): print('Solution part two: ', i+1); break;
+    l = f.read().strip();
+    startOfPacket, startOfMessage = 4, 14;
+    print('Solution part one: ', firstMarker(l, startOfPacket));
+    print('Solution part two: ', firstMarker(l, startOfMessage));
