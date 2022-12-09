@@ -21,6 +21,5 @@ with open('input.txt') as f:
                 
                 if (viewingDistance > highestScenicScore): highestScenicScore = viewingDistance;
             
-        
     print('Solution part one: ', sum(sum(1 for x in list if x) for list in visible));
     print('Solution part two: ', highestScenicScore);
