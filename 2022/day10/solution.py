@@ -1,26 +1,24 @@
-X = 1;
-cycle = 0;
-wantedCycle = 20;
-signalStrength = 0;
-screenRow = 40;
-instructions = [];
-pixels = [[]];
+X = 1
+cycle = 0
+signalStrength = 0
+instructions = []
+image = []
 
 def newCycle(x):
-    global X, cycle, wantedCycle, signalStrength, instructions, pixels;
-    pixels[len(pixels)-1].append('#' if abs(X - (cycle % screenRow)) < 2 else '.');
-    cycle += 1; 
-    if (cycle >= wantedCycle): signalStrength += X*wantedCycle; wantedCycle += 40;
-    if (cycle % screenRow == 0): pixels.append([]); 
+    global X, cycle, signalStrength, instructions, image
+    if (cycle % 40 == 0): image.append([])
+    image[len(image)-1].append('#' if abs(X - (cycle % 40)) < 2 else '.')
     
-    instructions.append(x);
-    X += instructions.pop(0);
+    cycle += 1
+    if ((cycle + 20) % 40 == 0): signalStrength += X*cycle
+    
+    instructions.append(x)
+    X += instructions.pop(0)
 
 with open('input.txt') as f:
     for l in f:
-        if (l.strip()): newCycle(0);
-        if (l.split(' ')[0] == 'addx'): newCycle(int(l.split(' ')[1]));
+        if l.strip(): newCycle(0)
+        if l.split(' ')[0] == 'addx': newCycle(int(l.split(' ')[1]))
             
 print('Solution part one: ', signalStrength)
-print('Solution part two: ')
-print(*[''.join(p) for p in pixels], sep='\n')
+print('Solution part two: ', *[' '.join(p) for p in image], sep='\n')
