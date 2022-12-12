@@ -47,7 +47,3 @@ with open('input.txt') as f:
 
     print('Solution part one: ', getMonkeyBusiness(copy.deepcopy(monkeys), 20, copy.deepcopy(itemsdict), True, 3))
     print('Solution part two: ', getMonkeyBusiness(copy.deepcopy(monkeys), 10000, copy.deepcopy(itemsdict), False, allDivisions))
-          
-    
-            
-        
