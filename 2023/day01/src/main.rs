@@ -51,7 +51,6 @@ fn part_two(input: &str) {
                 calibration_value.push_str(num)
             }
         }
-        print!("{}\n", calibration_value);
         calibration += calibration_value.parse::<i32>().unwrap();
         
     }
