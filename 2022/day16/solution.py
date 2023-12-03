@@ -31,7 +31,6 @@ with open('input.txt') as f:
             actions_1.appendleft(-1)
             
         if len(actions_0) == 0 or len(actions_1) == 0:
-            # empty move
             return pressure
         
         for action_0 in actions_0:
@@ -67,6 +66,6 @@ with open('input.txt') as f:
     
     open_valves = flow_rates == 0
     start_time = time.time()
-    highest_pressure= next_action(start, start, start, start, open_valves, 0, 1, 0)
+    highest_pressure = next_action(start, start, start, start, open_valves, 0, 1, 0)
     print('Time taken: ', time.time() - start_time)
     print('Solution part two: ', highest_pressure)

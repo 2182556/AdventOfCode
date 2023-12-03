@@ -109,5 +109,5 @@ fn part_two(field: &Vec<Vec<char>>) {
             sum_gear_ratios += adjacent[0] * adjacent[1];
         }
     }
-    print!("Sum of part numbers: {}\n", sum_gear_ratios);
+    print!("Sum of gear ratios: {}\n", sum_gear_ratios);
 }
