@@ -1,10 +1,12 @@
-import numpy as np
-
 with open('2022/day17/input.txt') as f:
     jets = list(f.readlines()[0])
     instructions = [-1 if jet == '<' else 1 for jet in jets]
     current_i = 0
-    shapes = [[[True, True, True, True]], [[False, True, False], [True, True, True], [False, True, False]], [[True, True, True], [False, False, True], [False, False, True]], [[True], [True], [True], [True]],[[True, True], [True, True]]]
+    shapes = [[[True, True, True, True]], 
+              [[False, True, False], [True, True, True], [False, True, False]], 
+              [[True, True, True], [False, False, True], [False, False, True]], 
+              [[True], [True], [True], [True]],
+              [[True, True], [True, True]]]
     chamber_width = 7
     field = []
     number_of_rocks = {}
@@ -67,18 +69,24 @@ with open('2022/day17/input.txt') as f:
                 previous_height = rock_and_jet[(current % len(shapes), (current_i) % len(instructions))]
                 len_pattern = len(field) - previous_height
                 pattern = True
-                for i in range(len_pattern):
+                for i in range(1, len_pattern + 1):
                     if field[-i] != field[-i - len_pattern]:
                         pattern = False
                         break
                 if pattern and previous_height in number_of_rocks:
                     repeating_rocks = number_of_rocks[len(field)] - number_of_rocks[previous_height]
                     tower_units = ((total - current) // repeating_rocks) * len_pattern
-                    current = total - (total - current) % repeating_rocks
+                    key_list = [key for key, val in number_of_rocks.items() if val == (total - current + 1) % repeating_rocks]
+                    if len(key_list) > 0:
+                        tower_units += key_list[-1]
+                        current = total
+                    else:
+                        current = total - (total - current) % repeating_rocks
+                    
                     
         rock_and_jet[(current % len(shapes), (current_i) % len(instructions))] = len(field)
                 
     # field.reverse()
     # field = [['#' if x else '.' for x in line] for line in field]
     # print(*field, sep='\n')
-    print(tower_units + len(field))
+    print('Tower height: ', tower_units + len(field))

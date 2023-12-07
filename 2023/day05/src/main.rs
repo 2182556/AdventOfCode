@@ -1,4 +1,4 @@
-use std::{ops::Range, vec};
+use std::ops::Range;
 
 fn main() {
     let input = include_str!("input.txt");
@@ -41,7 +41,6 @@ fn part_one(seeds: &Vec<i64>, maps: &Vec<Vec<(Range<i64>, i64)>>) {
 fn get_next_ranges(ranges: &Vec<Range<i64>>, map: &Vec<(Range<i64>, i64)>) -> Vec<Range<i64>> {
     let mut ranges = ranges.clone();
     let mut next_ranges = Vec::new();
-    // iterate over this until there are no more matches
     let mut matches = true;
     while matches && ranges.len() > 0 {
         matches = false;
