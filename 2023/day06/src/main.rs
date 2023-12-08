@@ -9,38 +9,24 @@ fn part_one(input: &str) {
     let distances: Vec<i32> = input.lines().collect::<Vec<_>>()[1].split(": ").collect::<Vec<_>>()[1].split_whitespace().collect::<Vec<_>>().iter().map(|x| x.parse::<i32>().unwrap()).collect();
     let mut multiplied = 1;
     for (i, time) in times.iter().enumerate() {
-        let best_distance = distances[i];
-        let mut better_distances = 0;
         for speed in 1..time-1 {
-            let distance = (time - speed) * speed;
-            if distance > best_distance {
-                better_distances += 1;
-            } 
+            if (time - speed) * speed > distances[i] {
+                multiplied *= time - speed + 1 - speed;
+                break;
+            }
         }
-        multiplied *= better_distances;
     }
     println!("Part one - Multiplied: {}", multiplied);
 }
 
 fn part_two(input: &str) {
-    let time: String = input.lines().collect::<Vec<_>>()[0].split(": ").collect::<Vec<_>>()[1].split_whitespace().collect();
-    let distance: String = input.lines().collect::<Vec<_>>()[1].split(": ").collect::<Vec<_>>()[1].split_whitespace().collect();
-    let time = time.parse::<i64>().unwrap();
-    let best_distance = distance.parse::<i64>().unwrap();
-    let mut range = 1..time-1;
+    let time: i64 = input.lines().collect::<Vec<_>>()[0].split(": ").collect::<Vec<_>>()[1].split_whitespace().collect::<String>().parse::<i64>().unwrap();
+    let best_distance: i64 = input.lines().collect::<Vec<_>>()[1].split(": ").collect::<Vec<_>>()[1].split_whitespace().collect::<String>().parse::<i64>().unwrap();
+
     for speed in 1..time-1 {
-        let distance = (time - speed) * speed;
-        if distance > best_distance {
-            range = speed..time-1;
+        if (time - speed) * speed > best_distance {
+            println!("Part two - Number of ways: {:?}", time - speed + 1 - speed);
             break;
         }
     }
-    for speed in (1..time-1).rev() {
-        let distance = (time - speed) * speed;
-        if distance > best_distance {
-            range = range.start..speed;
-            break;
-        }
-    }
-    println!("Part two - Number of ways: {:?}", range.end + 1 - range.start)
 }
