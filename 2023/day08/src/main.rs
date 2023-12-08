@@ -12,26 +12,21 @@ fn main() {
     let mut nodes = HashMap::new();
     for line in input.lines().skip(2) {
         let mut iter = line.split("=");
-        let node = iter.next().unwrap().trim();
+        let node = iter.next().unwrap().trim().to_string();
         let mut network = iter.next().unwrap().split(",");
-        let left = network.next().unwrap().chars().filter(|c| c.is_alphanumeric()).collect::<String>();
-        let right = network.next().unwrap().chars().filter(|c| c.is_alphanumeric()).collect::<String>();
-        nodes.insert(node.to_string(), (left, right));
+        let left = network.next().unwrap().chars().filter(|c| c.is_alphanumeric()).collect();
+        let right = network.next().unwrap().chars().filter(|c| c.is_alphanumeric()).collect();
+        nodes.insert(node, [left, right]);
     }
     part_one(&nodes, &instructions);
     part_two(&nodes, &instructions);
 }
 
-fn part_one(nodes: &HashMap<String, (String, String)>, instructions: &[usize]) {
+fn part_one(nodes: &HashMap<String, [String; 2]>, instructions: &[usize]) {
     let mut number_of_steps = 0;
-    let mut current_node = "AAA";
+    let mut current_node: String = "AAA".to_string();
     loop {
-        let (left, right) = nodes.get(current_node).unwrap();
-        if instructions[number_of_steps % instructions.len()] == 0 {
-            current_node = left;
-        } else {
-            current_node = right;
-        }
+        current_node = nodes.get(&current_node).unwrap()[instructions[number_of_steps % instructions.len()]].clone();
         number_of_steps += 1;
         if current_node == "ZZZ" {
             break;
@@ -55,23 +50,18 @@ fn get_lcm(numbers: &[usize]) -> usize {
     lcm
 }
 
-fn part_two(nodes: &HashMap<String, (String, String)>, instructions: &[usize]) {
+fn part_two(nodes: &HashMap<String, [String; 2]>, instructions: &[usize]) {
     let starting_points = nodes.keys().clone().filter(|s| s.ends_with("A")).collect::<Vec<_>>();
     let mut possible_ending_points: HashMap<String, HashMap<String, Vec<usize>>> = HashMap::from(
         starting_points.clone().iter().map(|s| (s.to_string(), HashMap::new())).collect::<HashMap<_, _>>()
     );
     let mut possible_number_of_steps = Vec::new();
     for start in starting_points {
-        let mut current_node = start;
+        let mut current_node = start.clone();
         let mut number_of_steps = 0;
         let mut repeating_pattern = false;
         loop {
-            let (left, right) = nodes.get(current_node).unwrap();
-            if instructions[number_of_steps % instructions.len()] == 0 {
-                current_node = left;
-            } else {
-                current_node = right;
-            }
+            current_node = nodes.get(&current_node).unwrap()[instructions[number_of_steps % instructions.len()]].clone();
             number_of_steps += 1;
             
             if current_node.ends_with("Z") {
