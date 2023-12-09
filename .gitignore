@@ -1,1 +1,4 @@
 .vscode
+
+# https://adventofcode.com/2023/about
+*.txt 
