@@ -1,4 +1,4 @@
-use std::{collections::HashMap, vec, thread::current};
+use std::{collections::HashMap, collections::HashSet, vec};
 
 fn main() {
     let input = include_str!("input.txt");
@@ -38,7 +38,7 @@ fn main() {
             current_coordinates.get_mut(&'l').unwrap().push((start.0 - 1, start.1));
         }
     }
-    if (start.0 as usize) < coordinates.len() {
+    if (start.0 as usize) < coordinates.len() - 1 {
         let next_symbol = coordinates.get(&(start.0 + 1, start.1)).unwrap();
         if connected_symbols.get(&'r').unwrap().contains(next_symbol) {
             current_coordinates.get_mut(&'r').unwrap().push((start.0 + 1, start.1));
@@ -50,7 +50,7 @@ fn main() {
             current_coordinates.get_mut(&'u').unwrap().push((start.0, start.1 - 1));
         }
     }
-    if (start.1 as usize) < coordinates.len() {
+    if (start.1 as usize) < coordinates.len() - 1 {
         let next_symbol = coordinates.get(&(start.0, start.1 + 1)).unwrap();
         if connected_symbols.get(&'d').unwrap().contains(next_symbol) {
             current_coordinates.get_mut(&'d').unwrap().push((start.0, start.1 + 1));
@@ -96,7 +96,7 @@ fn main() {
             }
         }
         let flattened = next_coordinates.values().flatten().collect::<Vec<_>>();
-        let has_duplicate_coordinates = flattened.len() != flattened.iter().collect::<std::collections::HashSet<_>>().len();
+        let has_duplicate_coordinates = flattened.len() != flattened.iter().collect::<HashSet<_>>().len();
         all_visited_coordinates.extend(flattened);
         step += 1;
         if has_duplicate_coordinates {
@@ -232,40 +232,32 @@ fn main() {
             }
         }
         else if coordinate.0 == 'd' {
-            if current_character == &'J' {
+            if current_character == &'J' || current_character == &'|' {
                 let mut next = (coordinate.1 .0 + 1, coordinate.1 .1);
                 while !all_visited_coordinates.contains(&next) && next.0 < field_size.0 as i32 {
                     neighbouring_coordinates_2.push(next);
                     next = (next.0 + 1, next.1);
                 }
-                next = (coordinate.1 .0, coordinate.1 .1 + 1);
-                while !all_visited_coordinates.contains(&next) && next.1 < field_size.1 as i32 {
-                    neighbouring_coordinates_2.push(next);
-                    next = (next.0, next.1 + 1);
-                }
             }
-            else if current_character == &'L' {
+            if current_character == &'L' || current_character == &'|' {
                 let mut next = (coordinate.1 .0 - 1, coordinate.1 .1);
                 while !all_visited_coordinates.contains(&next) && next.0 >= 0 {
                     neighbouring_coordinates_1.push(next);
                     next = (next.0 - 1, next.1);
                 }
-                next = (coordinate.1 .0, coordinate.1 .1 + 1);
+            }
+            if current_character == &'J' {
+                let mut next = (coordinate.1 .0, coordinate.1 .1 + 1);
                 while !all_visited_coordinates.contains(&next) && next.1 < field_size.1 as i32 {
-                    neighbouring_coordinates_1.push(next);
+                    neighbouring_coordinates_2.push(next);
                     next = (next.0, next.1 + 1);
                 }
             }
-            else if current_character == &'|' {
-                let mut next = (coordinate.1 .0 - 1, coordinate.1 .1);
-                while !all_visited_coordinates.contains(&next) && next.0 >= 0 {
+            if current_character == &'L' {
+                let mut next = (coordinate.1 .0, coordinate.1 .1 + 1);
+                while !all_visited_coordinates.contains(&next) && next.1 < field_size.1 as i32 {
                     neighbouring_coordinates_1.push(next);
-                    next = (next.0 - 1, next.1);
-                }
-                next = (coordinate.1 .0 + 1, coordinate.1 .1);
-                while !all_visited_coordinates.contains(&next) && next.0 < field_size.0 as i32 {
-                    neighbouring_coordinates_2.push(next);
-                    next = (next.0 + 1, next.1);
+                    next = (next.0, next.1 + 1);
                 }
             }
         }
@@ -301,10 +293,10 @@ fn main() {
         }
     }
     if inside_loop == 1 {
-        print!("Part 2 - Enclosed tiles: {}", neighbouring_coordinates_1.iter().collect::<std::collections::HashSet<_>>().len());
+        print!("Part 2 - Enclosed tiles: {}", neighbouring_coordinates_1.iter().collect::<HashSet<_>>().len());
     }
     else if inside_loop == 2 {
-        print!("Part 2 - Enclosed tiles: {}", neighbouring_coordinates_2.iter().collect::<std::collections::HashSet<_>>().len());
+        print!("Part 2 - Enclosed tiles: {}", neighbouring_coordinates_2.iter().collect::<HashSet<_>>().len());
     }
     else {
         panic!("Both loops reach border values");
