@@ -10,7 +10,7 @@ fn main() {
             }
         }
     }
-    let expansion_rate = 1000000;
+    let expansion_rate = 1000000; // 2 for part 1
     let mut row = 0;
     loop {
         if x_s.contains(&row) {
