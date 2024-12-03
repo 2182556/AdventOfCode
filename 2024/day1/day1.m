@@ -1,7 +1,7 @@
 clc
 clearvars
 
-fileID = fopen('./input.txt','r');
+fileID = fopen('input.txt','r');
 formatSpec = '%d %d\n';
 input = fscanf(fileID,formatSpec,[2 Inf]);
 fclose(fileID);
