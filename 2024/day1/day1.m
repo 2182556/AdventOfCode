@@ -8,11 +8,11 @@ fclose(fileID);
 
 columns = input';
 distances_summed = sum(abs(diff(sort(columns)')));
-fprintf('Solution part one: %d\n',distances_summed);
+fprintf('Answer part one: %d\n',distances_summed);
 
 count = 0;
 for i = 1:length(columns)
     count = count + columns(i, 1) * sum(columns(:,2) == columns(i,1));
 end
 
-fprintf('Solution part two: %d\n',count);
+fprintf('Answer part two: %d\n',count);

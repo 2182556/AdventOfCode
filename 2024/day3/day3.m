@@ -26,4 +26,4 @@ for i = 1:length(lines)
     end
 end
 
-fprintf('Solution: %d\n',multiplications);
+fprintf('Answer: %d\n',multiplications);

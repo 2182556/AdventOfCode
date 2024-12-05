@@ -43,5 +43,5 @@ for i = 1:length(lines)
     end
 end
 
-fprintf('Solution part one: %d\n',count);
-fprintf('Solution part two: %d\n',count + additionalCount);
+fprintf('Answer part one: %d\n',count);
+fprintf('Answer part two: %d\n',count + additionalCount);
